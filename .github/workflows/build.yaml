@@ -24,7 +24,7 @@ jobs:
       env:
         GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
       run: |
-        gcloud auth configure-docer asia-northeast3-docker.pkg.dev
+        gcloud auth configure-docker asia-northeast3-docker.pkg.dev
         docker build -t asia-northeast3-docker.pkg.dev/$GOOGLE_PROJECT/demo/test:latest .
         docker push asia-northeast3-docker.pkg.dev/$GOOGLE_PROJECT/demo/test:latest
       
