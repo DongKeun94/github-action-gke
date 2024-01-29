@@ -6,21 +6,29 @@ on:
     - "master"
 
 jobs:
-  deploy: 
-    runs-on: ubuntu-latest
-    steps:
+  jobs_id:
+    permissions:
+      contents: 'read'
+      id-token: 'write'
 
-    - name: code checkout
-      uses: actions/checkout@v4
+    steps:
 
     - id: 'auth'
       uses: 'google-github-actions/auth@v2'
       with: 'projects/$GOOGLE_PROJECT/asia-northeast3/global/workloadIdentityPools/my-pool/providers/my-provider'
         workload_identity_provider: projects/681084132231/locations/global/workloadIdentityPools/github
         service_account: ${{ secret.GOOGLE_SA}}
+
+    - name: code checkout
+      uses: actions/checkout@v4
         
     - name: install the gcloud cli
       uses: google-github-actions/setup-gcloud@v2
+      with:
+        version: '>= 363.0.0'
+    
+    - name: 'Use gcloud CLI'
+      run: 'gcloud info'
     
     - name: build and push the docker image
       env:
