@@ -13,7 +13,6 @@ jobs:
 
     steps:
     - uses: 'actions/checkout@v4'
-
     - name: auth
       uses: 'google-github-actions/auth@v2'
       with: 'projects/$GOOGLE_PROJECT/asia-northeast3/global/workloadIdentityPools/my-pool/providers/my-provider'
