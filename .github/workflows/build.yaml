@@ -12,11 +12,13 @@ jobs:
       id-token: 'write'
 
     steps:
-    - id: 'auth'
-      uses: 'google-github-actions/auth@v2'
+    - users: 'actions/checkout@v4'
+
+    - uses: 'google-github-actions/auth@v2'
       with: 'projects/$GOOGLE_PROJECT/asia-northeast3/global/workloadIdentityPools/my-pool/providers/my-provider'
         workload_identity_provider: projects/681084132231/locations/global/workloadIdentityPools/github
-        service_account: ${{ secret.GOOGLE_SA}}
+        service_account: ${{ secret.GOOGLE_SA} }
+        project_id: ${{ secret.GOOGLE_PROJECT }}
 
     - name: code checkout
       uses: actions/checkout@v4
