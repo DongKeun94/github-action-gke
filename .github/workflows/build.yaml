@@ -6,13 +6,12 @@ on:
     - "master"
 
 jobs:
-  jobs_id:
+  job_id:
     permissions:
       contents: 'read'
       id-token: 'write'
 
     steps:
-
     - id: 'auth'
       uses: 'google-github-actions/auth@v2'
       with: 'projects/$GOOGLE_PROJECT/asia-northeast3/global/workloadIdentityPools/my-pool/providers/my-provider'
