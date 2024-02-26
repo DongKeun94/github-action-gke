@@ -28,7 +28,7 @@ jobs:
     
     - name: build and push the docker image
       run: |
-        IMAGE_TAG=$(date +'%Y%m%d%H%M%S')      
+        export IMAGE_TAG=$(date +'%Y%m%d%H%M%S')      
         gcloud auth configure-docker asia-northeast3-docker.pkg.dev
         docker build -t asia-northeast3-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/test-repo/images/test:$IMAGE_TAG .
         docker push asia-northeast3-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/test-repo/images/test:$IMAGE_TAG
@@ -45,4 +45,4 @@ jobs:
     - name: Push Helm chart
       run: |
         gcloud auth print-access-token | helm registry login -u oauth2accesstoken --password-stdin https://asia-northeast3-docker.pkg.dev
-        helm push go-test-0.1.0.tgz oci://asia-northeast3-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/test-repo/charts/test
+        helm push go-test-0.1.0.tgz oci://asia-northeast3-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/test-repo/charts/test:$IMAGE_TAG
