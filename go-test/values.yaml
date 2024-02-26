@@ -4,6 +4,8 @@
 
 replicaCount: 1
 
+containerPort: 8080
+
 image:
   repository: asia-northeast3-docker.pkg.dev/dksung-gke-project/test-repo/images/test
   pullPolicy: IfNotPresent
@@ -42,6 +44,7 @@ securityContext: {}
 service:
   type: LoadBalancer
   port: 80
+  targetPort: 8080
 
 ingress:
   enabled: false
