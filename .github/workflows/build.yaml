@@ -45,4 +45,4 @@ jobs:
     - name: Push Helm chart
       run: |
         gcloud auth print-access-token | helm registry login -u oauth2accesstoken --password-stdin https://asia-northeast3-docker.pkg.dev
-        helm push go-test-0.1.0.tgz oci://asia-northeast3-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/test-repo/charts/test:$IMAGE_TAG
+        helm push go-test-0.1.0.tgz oci://asia-northeast3-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/test-repo/charts/test
