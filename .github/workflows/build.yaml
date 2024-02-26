@@ -43,4 +43,5 @@ jobs:
     - name: Package Helm chart
       run: |
         helm package go-test/
+        helm init
         helm push go-test-0.1.0.tgz oci://asia-northeast3-docker.pkg.dev/$GOOGLE_PROJECT/test-repo/charts/test:$IMAGE_TAG
