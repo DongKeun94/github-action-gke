@@ -5,10 +5,9 @@
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: asia-northeast3-docker.pkg.dev/dksung-gke-project/test-repo/images/test
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
 
 imagePullSecrets: []
 nameOverride: ""
@@ -40,7 +39,7 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: ClusterIP
+  type: LoadBalancer
   port: 80
 
 ingress:
@@ -71,14 +70,14 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
-livenessProbe:
-  httpGet:
-    path: /
-    port: http
-readinessProbe:
-  httpGet:
-    path: /
-    port: http
+#livenessProbe:
+#  httpGet:
+#    path: /
+#   port: http
+#readinessProbe:
+#  httpGet:
+#    path: /
+#    port: http
 
 autoscaling:
   enabled: false
