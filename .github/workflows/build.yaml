@@ -30,7 +30,7 @@ jobs:
       env:
         GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
       run: |
-        IMAGE_TAG=$(date +'%Y%m%d%H%M%S')      
+        export IMAGE_TAG=$(date +'%Y%m%d%H%M%S')      
         gcloud auth configure-docker asia-northeast3-docker.pkg.dev
         docker build -t asia-northeast3-docker.pkg.dev/$GOOGLE_PROJECT/test-repo/images/test:$IMAGE_TAG .
         docker push asia-northeast3-docker.pkg.dev/$GOOGLE_PROJECT/test-repo/images/test:$IMAGE_TAG
