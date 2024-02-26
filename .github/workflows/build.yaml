@@ -20,22 +20,18 @@ jobs:
     - id: 'auth'
       uses: 'google-github-actions/auth@v2'
       with:
-        workload_identity_provider: 'projects/681084132231/locations/global/workloadIdentityPools/github/providers/my-repo'
+        workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY_PROVIDER}}
         service_account: ${{ secrets.GOOGLE_SA }}
 
     - name: install the gcloud cli
       uses: google-github-actions/setup-gcloud@v2
-      #with:
-      #  project_id: ${{ secrets.GOOGLE_PROJECT }}
-      #  service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-      #  export_default_credentials: true
     
     - name: build and push the docker image
       env:
         GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
       run: |
         gcloud auth configure-docker asia-northeast3-docker.pkg.dev
-        docker build -t asia-northeast3-docker.pkg.dev/$GOOGLE_PROJECT/demo/test:latest .
-        docker push asia-northeast3-docker.pkg.dev/$GOOGLE_PROJECT/demo/test:latest
+        docker build -t asia-northeast3-docker.pkg.dev/$GOOGLE_PROJECT/test-repo/images/test:latest .
+        docker push asia-northeast3-docker.pkg.dev/$GOOGLE_PROJECT/test-repo/images/test:latest
       
 
