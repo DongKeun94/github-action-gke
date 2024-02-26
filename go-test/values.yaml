@@ -8,6 +8,7 @@ image:
   repository: asia-northeast3-docker.pkg.dev/dksung-gke-project/test-repo/images/test
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
+  imageTag: "latest"
 
 imagePullSecrets: []
 nameOverride: ""
