@@ -22,9 +22,14 @@ jobs:
       with:
         workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY_PROVIDER}}
         service_account: ${{ secrets.GOOGLE_SA }}
+        create_credentails_file: true
 
     - name: install the gcloud cli
       uses: google-github-actions/setup-gcloud@v2
+
+    - name : gcloud login
+      run : |-
+        gcloud auth login 
     
     - name: build and push the docker image
       env:
