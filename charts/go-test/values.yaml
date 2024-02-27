@@ -46,6 +46,28 @@ service:
   port: 80
   targetPort: 8080
 
+deployment:
+  replicaCount: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  selector:
+    matchLabels:
+      app: {{ template "fullname" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "fullname" . }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.imageTag }}"
+          ports:
+            - containerPort: 8080
+              name: http
+
 ingress:
   enabled: false
   className: ""
