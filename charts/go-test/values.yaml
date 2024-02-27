@@ -23,7 +23,11 @@ podSecurityContext: {}
 
 securityContext: {}
 
-serviceAccountName: ""
+serviceAccountName: 
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
 
 livenessProbe: {}
 readinessProbe: {}
