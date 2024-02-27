@@ -39,7 +39,7 @@ jobs:
 
     - name: Package Helm chart
       run: |
-        helm package ./charts/go-test
+        helm package --version 0.1.5 ./charts/go-test
     
     - name: Push Helm chart
       run: |
