@@ -39,9 +39,9 @@ jobs:
 
     - name: Package Helm chart
       run: |
-        helm package --version 0.1.5 ./charts/go-test
+        helm package --version ./charts/go-test
     
     - name: Push Helm chart
       run: |
         gcloud auth print-access-token | helm registry login -u oauth2accesstoken --password-stdin https://asia-northeast3-docker.pkg.dev
-        helm push go-test-0.1.5.tgz oci://asia-northeast3-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/test-repo/charts
+        helm push go-test-*.tgz oci://asia-northeast3-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/test-repo/charts
