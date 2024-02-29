@@ -30,6 +30,6 @@ func hello(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hello, world!\n")
 	fmt.Fprintf(w, "Version: 1.0.0\n")
 	fmt.Fprintf(w, "Hostname: %s\n", host)
-	fmt.Fprintf(w, "TecACe GX !!!\n")
-	fmt.Fprintf(w, "Image modified test !!!\n")
+	fmt.Fprintf(w, "TecACe GX  GX GX GX!!!\n")
+	fmt.Fprintf(w, "Image modified test test test set !!!!!!!!!! !!!\n")
 }
