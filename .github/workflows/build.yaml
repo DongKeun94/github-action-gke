@@ -13,7 +13,7 @@ jobs:
     
     runs-on: ubuntu-latest
     env:
-      IMAGE_TAG: $(echo "${GITHUB_SHA:0:7}")
+      IMAGE_TAG: "${GITHUB_SHA:0:7}"
    
     steps:
     - name: code checkout
