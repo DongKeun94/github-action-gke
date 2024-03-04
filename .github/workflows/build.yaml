@@ -12,6 +12,8 @@ jobs:
       id-token: 'write' 
     
     runs-on: ubuntu-latest
+    env:
+      EX_TAG: "${GITHUB_SHA:0:7}"
    
     steps:
     - name: code checkout
@@ -28,9 +30,15 @@ jobs:
     
     - name: build and push the docker image
       run: |
+        export IMAGE_TAG=${{env.EX_TAG}}
         gcloud auth configure-docker asia-northeast3-docker.pkg.dev
-        docker build -t asia-northeast3-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/test-repo/images/test:latest .
-        docker push asia-northeast3-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/test-repo/images/test:latest
+        docker build -t asia-northeast3-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/test-repo/images/test:$IMAGE_TAG .
+        docker push asia-northeast3-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/test-repo/images/test:$IMAGE_TAG
+
+    - name: Update values.yaml
+      run: |
+        export IMAGE_TAG=${{env.EX_TAG}}
+        sed -i "s/tag:.*/tag: "$IMAGE_TAG"/g" ./charts/go-test/values.yaml
 
     - name: Set up Helm
       uses: azure/setup-helm@v2
