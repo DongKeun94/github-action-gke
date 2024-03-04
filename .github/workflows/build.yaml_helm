@@ -1,0 +1,47 @@
+name: Deploy test app
+
+on:
+  push:
+    branches:
+    - "master"
+
+jobs:
+  deploy:
+    permissions:
+      contents: 'read'
+      id-token: 'write' 
+    
+    runs-on: ubuntu-latest
+   
+    steps:
+    - name: code checkout
+      uses: actions/checkout@v4
+    
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v2'
+      with:
+        workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY_PROVIDER}}
+        service_account: ${{ secrets.GOOGLE_SA }}
+
+    - name: install the gcloud cli
+      uses: google-github-actions/setup-gcloud@v2
+    
+    - name: build and push the docker image
+      run: |
+        gcloud auth configure-docker asia-northeast3-docker.pkg.dev
+        docker build -t asia-northeast3-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/test-repo/images/test:latest .
+        docker push asia-northeast3-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/test-repo/images/test:latest
+
+    - name: Set up Helm
+      uses: azure/setup-helm@v2
+      with:
+        version: 'latest'
+
+    - name: Package Helm chart
+      run: |
+        helm package ./charts/go-test
+    
+    - name: Push Helm chart
+      run: |
+        gcloud auth print-access-token | helm registry login -u oauth2accesstoken --password-stdin https://asia-northeast3-docker.pkg.dev
+        helm push go-test-*.tgz oci://asia-northeast3-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/test-repo/charts
