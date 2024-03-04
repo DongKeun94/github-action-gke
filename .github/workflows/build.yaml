@@ -1,63 +1,43 @@
-name: ci
+ name: Build and Push to Artifact Registry
 
-on:
-  #schedule:
-  #  - cron: "0 10 * * *"
+ on:
   push:
-    branches:
-      - "**"
-    tags:
-      - "v*.*.*"
+    branches: ["master"]
   pull_request:
-    branches:
-      - "master"
+    branches: ["master"]
 
-jobs:
-  docker:
+ env:
+  PROJECT_ID: ${{ secrets.GOOGLE_PROJECT }}
+  REGION: asia-northeast3
+  GAR_LOCATION: asia-northeast3-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/test-repo/images/test
+
+
+ jobs:
+  build-push-artifact:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          # list of Docker images to use as base name for tags
-          images: |
-            name/app
-            ghcr.io/username/app
-          # generate Docker tags based on the following events/attributes
-          tags: |
-            type=schedule
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-            type=sha
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: "Checkout"
+        uses: "actions/checkout@v3"
 
-      - id: 'auth'
+      - id: "auth"
         uses: 'google-github-actions/auth@v2'
         with:
           workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY_PROVIDER}}
           service_account: ${{ secrets.GOOGLE_SA }}
 
-      - name: install the gcloud cli
-        uses: google-github-actions/setup-gcloud@v2
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v1"
 
-      - name: Authenticate with Google Cloud Artifact Registry
-        if: github.event_name != 'pull_request'
-        run: |
+      - name: "Use gcloud CLI"
+        run: "gcloud info"
+
+      - name: "Docker auth"
+        run: |-
           gcloud auth configure-docker asia-northeast3-docker.pkg.dev
-          
-      - name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Build image
+        run: docker build --tag ${{ env.GAR_LOCATION }} .
+        working-directory: WORKING_DIRECTORY
+
+      - name: Push image
+        run: docker push ${{ env.GAR_LOCATION }}
