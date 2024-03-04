@@ -9,12 +9,8 @@ containerPort: 8080
 image:
   repository: asia-northeast3-docker.pkg.dev/dksung-gke-project/test-repo/images/test
   pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
   imageTag: "latest"
 
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
 
 serviceAccount:
   # Specifies whether a service account should be created
