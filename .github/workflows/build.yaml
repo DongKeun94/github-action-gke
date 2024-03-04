@@ -35,12 +35,12 @@ jobs:
     - name: build and push the docker image
       run: |
         gcloud auth configure-docker asia-northeast3-docker.pkg.dev
-        docker build -t asia-northeast3-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/test-repo/images/test:{{ steps.slug.outputs.sha7 }} .
-        docker push asia-northeast3-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/test-repo/images/test:{{ steps.slug.outputs.sha7 }}
+        docker build -t asia-northeast3-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/test-repo/images/test:{{ steps.tag.outputs.sha7 }} .
+        docker push asia-northeast3-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/test-repo/images/test:{{ steps.tag.outputs.sha7 }}
 
     - name: Update values.yaml
       run: |
-        TAG=`{{ steps.slug.outputs.sha7 }}` && \
+        TAG=`{{ steps.tag.outputs.sha7 }}` && \
         sed -i 's/imageTag:.*/imageTag: '${TAG}'/g' ./charts/go-test/values.yaml
 
     - name: Set up Helm
