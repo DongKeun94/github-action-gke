@@ -27,9 +27,8 @@ func main() {
 func hello(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Serving request: %s", r.URL.Path)
 	host, _ := os.Hostname()
-	fmt.Fprintf(w, "Hello, world! imageUpdater\n")
+	fmt.Fprintf(w, "Hello, world! iasdfasdfasdf asdf asdf asdfmageUpdater\n")
 	fmt.Fprintf(w, "Version: 1.0.0\n")
 	fmt.Fprintf(w, "Hostname: %s\n", host)
-	fmt.Fprintf(w, "DKDKDKDKDK DK DK DK KDKKDK KD KDK DK DK KD KDKD KD!!!\n")
 	fmt.Fprintf(w, "Image modified test test test set !!!!!!!!!! !!!\n")
 }
