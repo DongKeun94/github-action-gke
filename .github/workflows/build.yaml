@@ -30,6 +30,7 @@ jobs:
     
     - name: build and push the docker image
       run: |
+        echo ${{env.IMAGE_TAG}}
         gcloud auth configure-docker asia-northeast3-docker.pkg.dev
         docker build -t asia-northeast3-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/test-repo/images/test:${{ env.IMAGE_TAG }} .
         docker push asia-northeast3-docker.pkg.dev/${{ secrets.GOOGLE_PROJECT }}/test-repo/images/test:${{ env.IMAGE_TAG }}
