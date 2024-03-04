@@ -36,7 +36,7 @@ jobs:
 
     - name: Update values.yaml
       run: |
-        sed -i 's/imageTag:.*/imageTag:"${{ env.IMAGE_TAG }}"/g' ./charts/go-test/values.yaml
+        sed -i 's/imageTag:.*/imageTag:${{ env.IMAGE_TAG }}/g' ./charts/go-test/values.yaml
 
     - name: Set up Helm
       uses: azure/setup-helm@v2
